@@ -7,7 +7,7 @@
 
 <html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="###训练测试集划分  留出法  把数据集D划分为两个互斥的子集 train/test数据集应该尽可能保持数据分布的一致性，避免因为划分而引入额外的偏差（使用分层采样） 单次使用因为随机划分会导致估计结果不稳定，应该多次随机划分，重复进行实验评估后取平均值。   交叉验证法  将数据集D划分成K个互斥的子集，每次使用k-1个集合数据作为Train，剩下的子集作为test，从而进行k次训练和测试，返">
+<meta name="description" content="1. 训练集划分留出法a. 把数据集D划分为两个互斥的子集 b. train/test数据集应该尽可能保持`数据分布的一致性`，避免因为划分而引入额外的偏差（使用分层采样） c. 单次使用因为随机划分会导致估计结果不稳定，应该多次随机划分，重复进行实验评估后取平均值。 交叉验证法a. 将数据集D划分成k个互斥的子集，每次使用k-1个集合数据作为Train，剩下的子集作为test，从而进行k次训练和">
 <meta property="og:type" content="article">
 <meta property="og:title" content="模型评估">
 <meta property="og:url" content="http://yoursite.com/2018/03/02/模型评估/index.html">
 <meta property="og:site_name" content="独行侠">
-<meta property="og:description" content="###训练测试集划分  留出法  把数据集D划分为两个互斥的子集 train/test数据集应该尽可能保持数据分布的一致性，避免因为划分而引入额外的偏差（使用分层采样） 单次使用因为随机划分会导致估计结果不稳定，应该多次随机划分，重复进行实验评估后取平均值。   交叉验证法  将数据集D划分成K个互斥的子集，每次使用k-1个集合数据作为Train，剩下的子集作为test，从而进行k次训练和测试，返">
+<meta property="og:description" content="1. 训练集划分留出法a. 把数据集D划分为两个互斥的子集 b. train/test数据集应该尽可能保持`数据分布的一致性`，避免因为划分而引入额外的偏差（使用分层采样） c. 单次使用因为随机划分会导致估计结果不稳定，应该多次随机划分，重复进行实验评估后取平均值。 交叉验证法a. 将数据集D划分成k个互斥的子集，每次使用k-1个集合数据作为Train，剩下的子集作为test，从而进行k次训练和">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-02T14:41:58.385Z">
+<meta property="og:updated_time" content="2018-03-03T04:11:50.259Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="模型评估">
-<meta name="twitter:description" content="###训练测试集划分  留出法  把数据集D划分为两个互斥的子集 train/test数据集应该尽可能保持数据分布的一致性，避免因为划分而引入额外的偏差（使用分层采样） 单次使用因为随机划分会导致估计结果不稳定，应该多次随机划分，重复进行实验评估后取平均值。   交叉验证法  将数据集D划分成K个互斥的子集，每次使用k-1个集合数据作为Train，剩下的子集作为test，从而进行k次训练和测试，返">
+<meta name="twitter:description" content="1. 训练集划分留出法a. 把数据集D划分为两个互斥的子集 b. train/test数据集应该尽可能保持`数据分布的一致性`，避免因为划分而引入额外的偏差（使用分层采样） c. 单次使用因为随机划分会导致估计结果不稳定，应该多次随机划分，重复进行实验评估后取平均值。 交叉验证法a. 将数据集D划分成k个互斥的子集，每次使用k-1个集合数据作为Train，剩下的子集作为test，从而进行k次训练和">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <title>模型评估 | 独行侠</title>
+  <title>模型评估 | 独行侠</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -144,7 +144,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -321,60 +321,51 @@
       
 
       
-        <p>###训练测试集划分</p>
-<ol>
-<li><p>留出法</p>
-<ul>
-<li>把数据集D划分为两个互斥的子集</li>
-<li>train/test数据集应该尽可能保持<code>数据分布的一致性</code>，避免因为划分而引入额外的偏差（使用分层采样）</li>
-<li>单次使用因为随机划分会导致估计结果不稳定，应该多次随机划分，重复进行实验评估后取平均值。</li>
-</ul>
-</li>
-<li><p>交叉验证法</p>
-<ul>
-<li>将数据集D划分成K个互斥的子集，每次使用k-1个集合数据作为Train，剩下的子集作为test，从而进行k次训练和测试，返回均值。</li>
-<li>评估结果依赖于k的选择。</li>
-<li>留一法是交叉验证的特殊情况；优点：使用了尽可能多的数据进行训练；缺点：计算开销</li>
-</ul>
-</li>
-<li>自助法（Bootstrapping）<ul>
-<li>每次从数据集D中选择一个样本拷贝到D’, 直至|D|=|D’|，D’用于训练，D-D’用于测试。</li>
-<li>$\lim_{m\rightarrow+\infty}(1-\frac{1}{m})^m = \frac{1}{e}$,样本在m次采样中始终不被采到的概率，<code>包外估计</code></li>
-<li>优点：适用于数据集过小时；产生了多个不同的训练集，适用于集成学习</li>
-<li>缺点：改变了数据的原始分布，会带来估计得偏差。</li>
-</ul>
-</li>
-</ol>
-<p>###性能度量</p>
-<pre><code>| 真实/预测        | 正例    |  反例  |
-| --------   | -----:   | :----: |
-| 正例        | TP      |   FN    |
-| 反例        | FP      |   TN   |
-</code></pre><ol>
-<li>PR曲线</li>
-</ol>
-<ul>
-<li>Precision: $\frac{TP}{TP+FP}$</li>
-<li>Recall: $\frac{TP}{TP+FN}$</li>
-<li>查准率和查全率是一对矛盾的度量，设定一个threshold，就可以得到相应的P和R，得到PR曲线</li>
-<li>BEP：平衡点,P=R时的取值</li>
-<li>F1度量： $\frac{1}{F<em>1}=\frac{1}{2}*(\frac{1}{P}+\frac{1}{R})$<br>$F</em>\beta$度量： $\frac{1}{F_\beta}=\frac{1}{1+\beta^2}*(\frac{1}{P}+\frac{\beta^2}{R})$<br>$\beta$&gt;1时，查全率影响更大</li>
-</ul>
-<ol>
-<li>ROC和AUC</li>
-</ol>
-<ul>
-<li>ROC的纵轴：TPR(True Positive rate)<br>ROC的横轴：FPR(False Positive rate)<br>$TPR=\frac{TP}{TP+FN}$(Recall)<br>$FPR=\frac{FP}{FP+TN}$</li>
-<li>AUC为ROC曲线下的面积</li>
-</ul>
-<ol>
-<li>代价敏感</li>
-</ol>
-<ul>
-<li>不同类型错误所造成的损失不同。</li>
-</ul>
-<p>###偏差与方差</p>
-<ul>
+        <h3 id="1-训练集划分"><a href="#1-训练集划分" class="headerlink" title="1. 训练集划分"></a>1. 训练集划分</h3><h4 id="留出法"><a href="#留出法" class="headerlink" title="留出法"></a>留出法</h4><pre><code>a. 把数据集D划分为两个互斥的子集
+b. train/test数据集应该尽可能保持`数据分布的一致性`，避免因为划分而引入额外的偏差（使用分层采样）
+c. 单次使用因为随机划分会导致估计结果不稳定，应该多次随机划分，重复进行实验评估后取平均值。
+</code></pre><h4 id="交叉验证法"><a href="#交叉验证法" class="headerlink" title="交叉验证法"></a>交叉验证法</h4><pre><code>a. 将数据集D划分成k个互斥的子集，每次使用k-1个集合数据作为Train，剩下的子集作为test，从而进行k次训练和测试，返回均值。
+b. 评估结果依赖于k的选择。
+c. 留一法是交叉验证的特殊情况；优点：使用了尽可能多的数据进行训练；缺点：计算开销
+</code></pre><h4 id="自助法（Bootstrapping）"><a href="#自助法（Bootstrapping）" class="headerlink" title="自助法（Bootstrapping）"></a>自助法（Bootstrapping）</h4><pre><code>a. 每次从数据集D中选择一个样本拷贝到D&apos;, 直至|D|=|D&apos;|，D&apos;用于训练，D-D&apos;用于测试。
+b. $\lim_{m\rightarrow+\infty}(1-\frac{1}{m})^m = \frac{1}{e}$, 样本在m次采样中始终不被采到的概率，**包外估计**
+优点：适用于数据集过小时；产生了多个不同的训练集，适用于集成学习
+缺点：改变了数据的原始分布，会带来估计得偏差。
+</code></pre><h3 id="2-性能度量"><a href="#2-性能度量" class="headerlink" title="2. 性能度量"></a>2. 性能度量</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">真实/预测</th>
+<th style="text-align:right">正例</th>
+<th style="text-align:center">反例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">正例</td>
+<td style="text-align:right">TP</td>
+<td style="text-align:center">FN</td>
+</tr>
+<tr>
+<td style="text-align:left">反例</td>
+<td style="text-align:right">FP</td>
+<td style="text-align:center">TN</td>
+</tr>
+</tbody>
+</table>
+<h4 id="PR曲线"><a href="#PR曲线" class="headerlink" title="PR曲线"></a>PR曲线</h4><pre><code>- Precision: $\frac{TP}{TP+FP}$
+- Recall: $\frac{TP}{TP+FN}$
+**查准率和查全率是一对矛盾的度量，设定一个threshold，就可以得到相应的P和R，得到PR曲线**
+- BEP：平衡点 P=R时的取值
+- F1度量：$$\frac{1}{F_1}=\frac{1}{2}*(\frac{1}{P}+\frac{1}{R})$$
+- $F_{\beta}$度量：
+- $\beta&gt;1$时，查全率影响更大
+</code></pre><h4 id="ROC和AUC"><a href="#ROC和AUC" class="headerlink" title="ROC和AUC"></a>ROC和AUC</h4><pre><code>- ROC的纵轴：TPR(True Positive rate)
+   ROC的横轴：FPR(False Positive rate)
+   $TPR=\frac{TP}{TP+FN}$(Recall)
+   $FPR=\frac{FP}{FP+TN}$
+- AUC为ROC曲线下的面积
+</code></pre><h4 id="代价敏感"><a href="#代价敏感" class="headerlink" title="代价敏感"></a>代价敏感</h4><pre><code>- 不同类型错误所造成的损失不同。
+</code></pre><h3 id="3-偏差与方差"><a href="#3-偏差与方差" class="headerlink" title="3. 偏差与方差"></a>3. 偏差与方差</h3><ul>
 <li>泛化误差=偏差+方差+噪声</li>
 <li>噪声是期望误差的下限</li>
 </ul>
@@ -446,8 +437,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -473,21 +473,12 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">2</span>
-                  <span class="site-state-item-name">标签</span>
-                
-              </div>
             
 
           </nav>
@@ -507,6 +498,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-训练集划分"><span class="nav-number">1.</span> <span class="nav-text">1. 训练集划分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#留出法"><span class="nav-number">1.1.</span> <span class="nav-text">留出法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交叉验证法"><span class="nav-number">1.2.</span> <span class="nav-text">交叉验证法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自助法（Bootstrapping）"><span class="nav-number">1.3.</span> <span class="nav-text">自助法（Bootstrapping）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-性能度量"><span class="nav-number">2.</span> <span class="nav-text">2. 性能度量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PR曲线"><span class="nav-number">2.1.</span> <span class="nav-text">PR曲线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ROC和AUC"><span class="nav-number">2.2.</span> <span class="nav-text">ROC和AUC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代价敏感"><span class="nav-number">2.3.</span> <span class="nav-text">代价敏感</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-偏差与方差"><span class="nav-number">3.</span> <span class="nav-text">3. 偏差与方差</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -701,6 +708,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
 
   
 
