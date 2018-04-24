@@ -79,17 +79,19 @@
 
 
 
-<meta name="description" content="1. HDFS(Hadoop Distributed File System)HDFS架构 数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。 Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。 Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。  HDFS操作 hadoop fs -ls">
+<meta name="description" content="1. n-gram模型核心假设：一个词出现的概率只与它前面的n个词相关，即：$$P(w_k|w_1,…,w_{k-1}) \approx P(w_k|w_{k-n+1},…,w_{k-1})$$根据大数定律，当语料库足够大时，概率可以由以下公式得出：$$P(w_k|w_1,…,w_{k-1}) = \frac{count(W_{k-n+1},…,W_{k})}{count(W_{k-n+1},…,">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hadoop初试">
-<meta property="og:url" content="http://yoursite.com/2018/04/20/Hadoop初试/index.html">
+<meta property="og:title" content="word2vec-基础语言模型">
+<meta property="og:url" content="http://yoursite.com/2018/04/24/word2vec-基础语言模型/index.html">
 <meta property="og:site_name" content="独行侠">
-<meta property="og:description" content="1. HDFS(Hadoop Distributed File System)HDFS架构 数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。 Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。 Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。  HDFS操作 hadoop fs -ls">
+<meta property="og:description" content="1. n-gram模型核心假设：一个词出现的概率只与它前面的n个词相关，即：$$P(w_k|w_1,…,w_{k-1}) \approx P(w_k|w_{k-n+1},…,w_{k-1})$$根据大数定律，当语料库足够大时，概率可以由以下公式得出：$$P(w_k|w_1,…,w_{k-1}) = \frac{count(W_{k-n+1},…,W_{k})}{count(W_{k-n+1},…,">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-20T11:46:26.057Z">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-基础语言模型.PNG">
+<meta property="og:updated_time" content="2018-04-24T14:09:54.375Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hadoop初试">
-<meta name="twitter:description" content="1. HDFS(Hadoop Distributed File System)HDFS架构 数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。 Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。 Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。  HDFS操作 hadoop fs -ls">
+<meta name="twitter:title" content="word2vec-基础语言模型">
+<meta name="twitter:description" content="1. n-gram模型核心假设：一个词出现的概率只与它前面的n个词相关，即：$$P(w_k|w_1,…,w_{k-1}) \approx P(w_k|w_{k-n+1},…,w_{k-1})$$根据大数定律，当语料库足够大时，概率可以由以下公式得出：$$P(w_k|w_1,…,w_{k-1}) = \frac{count(W_{k-n+1},…,W_{k})}{count(W_{k-n+1},…,">
+<meta name="twitter:image" content="http://yoursite.com/img/word2vec-基础语言模型.PNG">
 
 
 
@@ -119,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/20/Hadoop初试/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/24/word2vec-基础语言模型/"/>
 
 
 
 
 
-  <title>Hadoop初试 | 独行侠</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>word2vec-基础语言模型 | 独行侠</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -232,7 +234,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/20/Hadoop初试/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/24/word2vec-基础语言模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xlwang">
@@ -249,7 +251,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hadoop初试</h1>
+          <h1 class="post-title" itemprop="name headline">word2vec-基础语言模型</h1>
         
 
         <div class="post-meta">
@@ -261,8 +263,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-20T18:51:46+08:00">
-                2018-04-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-24T20:31:20+08:00">
+                2018-04-24
               </time>
             
 
@@ -284,8 +286,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
                   </a>
                 </span>
 
@@ -321,43 +323,29 @@
       
 
       
-        <h3 id="1-HDFS-Hadoop-Distributed-File-System"><a href="#1-HDFS-Hadoop-Distributed-File-System" class="headerlink" title="1. HDFS(Hadoop Distributed File System)"></a>1. HDFS(Hadoop Distributed File System)</h3><h4 id="HDFS架构"><a href="#HDFS架构" class="headerlink" title="HDFS架构"></a>HDFS架构</h4><ul>
-<li>数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。</li>
-<li>Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。</li>
-<li>Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。</li>
+        <h2 id="1-n-gram模型"><a href="#1-n-gram模型" class="headerlink" title="1. n-gram模型"></a>1. n-gram模型</h2><p><strong>核心假设：</strong>一个词出现的概率只与它前面的n个词相关，即：<br>$$P(w_k|w_1,…,w_{k-1}) \approx P(w_k|w_{k-n+1},…,w_{k-1})$$<br>根据大数定律，当语料库足够大时，概率可以由以下公式得出：<br>$$P(w_k|w_1,…,w_{k-1}) = \frac{count(W_{k-n+1},…,W_{k})}{count(W_{k-n+1},…,W_{k-1})}$$<br>这样可以使得参数更少，统计更加容易。</p>
+<ul>
+<li>unigram：n=1</li>
+<li>bigram: n=2</li>
+<li>trigram: n=3</li>
 </ul>
-<h4 id="HDFS操作"><a href="#HDFS操作" class="headerlink" title="HDFS操作"></a>HDFS操作</h4><ul>
-<li>hadoop fs -ls <args></args></li>
-<li>hadoop fs -put localfile hdfsfile  上传本机文件到hdfs中的目录下</li>
-<li>hadoop fs -get hdfsfile localfile  下载hdfs中的文件至本机</li>
-<li>hadoop fs -test -e path 检查文件是否存在，如果存在，返回0</li>
-<li>参考 <a href="https://www.yiibai.com/hadoop/hadoop_command_reference.html#article-start" target="_blank" rel="noopener">https://www.yiibai.com/hadoop/hadoop_command_reference.html#article-start</a> </li>
+<p><strong>平滑：以下情况需要平滑<br>$count(W_{k-n+1},…,W_{k})=0$<br>or<br>$count(W_{k-n+1},…,W_{k})=count(W_{k-n+1},…,W_{k-1})$</strong></p>
+<p><strong>总结：利用语料中各个词汇出现的次数，计算相应的概率值，用于对一个新词的预测。</strong></p>
+<h2 id="2-机器学习–神经网络"><a href="#2-机器学习–神经网络" class="headerlink" title="2. 机器学习–神经网络"></a>2. 机器学习–神经网络</h2><h3 id="2-1-核心目标：最小化损失函数"><a href="#2-1-核心目标：最小化损失函数" class="headerlink" title="2.1. 核心目标：最小化损失函数"></a>2.1. 核心目标：最小化损失函数</h3><p>$(context(w), w)$对应于一个训练样本，似然函数最大化：<br>$$\prod_{w \in C}P(w|context(w))$$<br>其中，$C$为语料库，context(w)为$w$的上下文信息。在n-gram中，对应于前n个词的个数。<br>$$L = \sum_{w \in C}log(w|context(w))$$</p>
+<h3 id="2-2-词向量"><a href="#2-2-词向量" class="headerlink" title="2.2. 词向量"></a>2.2. 词向量</h3><p>目标：将语言向量化，以便机器处理</p>
+<h4 id="2-2-1-one-hot-representation"><a href="#2-2-1-one-hot-representation" class="headerlink" title="2.2.1. one-hot representation"></a>2.2.1. one-hot representation</h4><p>最简单的一种方式，假设字典 $D$ 的大小为 $N$, 对于字典(语料 $C$ 中不重复的词)中的每个元素，都对应于一个 $N$维的向量，该向量中只有一个位置为1，其余都为0，1的位置即是该元素的索引。</p>
+<p><strong>缺点：稀疏存储，维度高；会造成任意两个词之间的孤立性</strong></p>
+<h4 id="2-2-2-distributed-representation"><a href="#2-2-2-distributed-representation" class="headerlink" title="2.2.2. distributed representation"></a>2.2.2. distributed representation</h4><p>把每一个词映射成一个固定长度的短向量，在这个词向量的空间中，根据词之间的距离来判断它们之间的相似性。这里的词可以替换为句子或者文档。<br>常见的方法：LSA, LDA， 神经网络……</p>
+<h3 id="2-3-神经网络模型"><a href="#2-3-神经网络模型" class="headerlink" title="2.3. 神经网络模型"></a>2.3. 神经网络模型</h3><p><img src="/img/word2vec-基础语言模型.PNG" alt="&quot;Model&quot;">  </p>
+<ul>
+<li>Input Layer:<br>$$X_w = \bigl(\begin{smallmatrix}<br>v(context(w)_1)\<br>.\<br>.\<br>.\<br>v(context(w)_{n-1})<br>\end{smallmatrix}\bigr)$$<br>其中$w(x)$ 代表词$x$ 的词向量，$X_w\in \mathbb{R}^{(n-1)*m}$, $m$ 为词向量的维度。</li>
+<li>Hidden Layer:<br>$$z_w = tanh(WX_w+p)$$<br>其中$W\in \mathbb{R}^{n_h\times (n-1)m}, p\in \mathbb{R}^{n_h}$</li>
+<li><p>Output Layer：<br>$$y_w = Uz_w + q$$<br>其中$U\in \mathbb{R}^{N\times n_h}, q\in \mathbb{R}^N$, $N$代表了字典$D$的大小。</p>
+</li>
+<li><p>字典 $D$ 中每一个词的概率为：<br>$$p(w|context(w)) = \frac{e^{y_{w,i_w}}}{\sum_{i=1}^Ne^{y_{w,i}}}$$<br>其中 $i_w$ 为词 $w$ 在词典$D$中的索引。</p>
+</li>
 </ul>
-<h3 id="2-Map-Reduce"><a href="#2-Map-Reduce" class="headerlink" title="2. Map-Reduce"></a>2. Map-Reduce</h3><p>三个阶段：Map,Shuffle,Reduce.</p>
-<h4 id="Map阶段"><a href="#Map阶段" class="headerlink" title="Map阶段"></a>Map阶段</h4><p>输入数据存储在HDFS中，处理后形成<key,value>若干小块。</key,value></p>
-<h4 id="Shuffle阶段"><a href="#Shuffle阶段" class="headerlink" title="Shuffle阶段"></a>Shuffle阶段</h4><p>Map阶段后，对key值进行了排序，再交给reduce，这个过程系统自动实现。</p>
-<h4 id="Reduce阶段"><a href="#Reduce阶段" class="headerlink" title="Reduce阶段"></a>Reduce阶段</h4><p>聚拢数据再处理，将输出结果返回到Hadoop服务器上。</p>
-<h3 id="3-Streaming"><a href="#3-Streaming" class="headerlink" title="3. Streaming"></a>3. Streaming</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p>任何语言编写的map, reduce程序能够在hadoop集群上运行，map/reduce程序只要遵循从标准输入stdin读，写出到标准输出stdout即可。</p>
-<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><pre><code>hadoop  jar /hadoop-mapreduce/hadoop-streaming.jar \\
--D mapred.job.name=&quot;xxx&quot; \\
--D mapreduce.job.queuename= xxx\\
--D mapred.map.tasks= x\\
--D mapred.reduce.tasks= x\\
--cmdenv CLASSPATH=\\
--input  xxx\\
--output  xxx\\
--mapper &quot;python mapper.py&quot; \\
--reducer &quot;python reducer.py&quot; \\
--file mapper.py \\
--file reducer.py
-</code></pre><h3 id="4-Python处理标准输入-输出相关"><a href="#4-Python处理标准输入-输出相关" class="headerlink" title="4. Python处理标准输入/输出相关"></a>4. Python处理标准输入/输出相关</h3><ul>
-<li>sys.argv: 用户输入的参数列表，程序外部输入</li>
-<li>os.system(‘command’): 会执行括号中的命令；如果成功，返回0，否则返回1；执行多条语句时，用;分隔</li>
-<li>sys.exit(1): 有错误退出</li>
-<li>sys.exit(0): 无错误退出</li>
-<li>str.join(sequence): str是连接的符号，sequence是连接的字符串序列</li>
-<li>调试时使用管道，模拟streaming, 在本地完成map/reduce程序的调试</li>
-</ul>
+<p><strong>优势：1. 相似的词或者句子的概率很相近；2. 平滑处理</strong></p>
 
       
     </div>
@@ -382,8 +370,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/02/模型评估/" rel="next" title="模型评估">
-                <i class="fa fa-chevron-left"></i> 模型评估
+              <a href="/2018/04/20/Hadoop初试/" rel="next" title="Hadoop初试">
+                <i class="fa fa-chevron-left"></i> Hadoop初试
               </a>
             
           </div>
@@ -391,10 +379,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/24/word2vec-基础语言模型/" rel="prev" title="word2vec-基础语言模型">
-                word2vec-基础语言模型 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -517,7 +501,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-HDFS-Hadoop-Distributed-File-System"><span class="nav-number">1.</span> <span class="nav-text">1. HDFS(Hadoop Distributed File System)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HDFS架构"><span class="nav-number">1.1.</span> <span class="nav-text">HDFS架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HDFS操作"><span class="nav-number">1.2.</span> <span class="nav-text">HDFS操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Map-Reduce"><span class="nav-number">2.</span> <span class="nav-text">2. Map-Reduce</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Map阶段"><span class="nav-number">2.1.</span> <span class="nav-text">Map阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shuffle阶段"><span class="nav-number">2.2.</span> <span class="nav-text">Shuffle阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reduce阶段"><span class="nav-number">2.3.</span> <span class="nav-text">Reduce阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Streaming"><span class="nav-number">3.</span> <span class="nav-text">3. Streaming</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#作用"><span class="nav-number">3.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令"><span class="nav-number">3.2.</span> <span class="nav-text">命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Python处理标准输入-输出相关"><span class="nav-number">4.</span> <span class="nav-text">4. Python处理标准输入/输出相关</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-n-gram模型"><span class="nav-number">1.</span> <span class="nav-text">1. n-gram模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-机器学习–神经网络"><span class="nav-number">2.</span> <span class="nav-text">2. 机器学习–神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-核心目标：最小化损失函数"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 核心目标：最小化损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-词向量"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 词向量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-one-hot-representation"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1. one-hot representation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-distributed-representation"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2. distributed representation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-神经网络模型"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. 神经网络模型</span></a></li></ol></li></ol></div>
             
 
           </div>
