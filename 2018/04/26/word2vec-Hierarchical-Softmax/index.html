@@ -79,17 +79,28 @@
 
 
 
-<meta name="description" content="1. HDFS(Hadoop Distributed File System)HDFS架构 数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。 Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。 Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。  HDFS操作 hadoop fs -ls">
+<meta name="description" content="word2vec中的两个模型如图所示，CBOW是已知当前词$w_t$的上下文$context(w_t)$，预测当前词$w_t$；SKip-gram恰好相反。  CBOW（Continuous Bag-of-Words Model）基本结构   Input Layer图中的 $context(w)$ 包含 $2c$ 个词向量：$v(context(w)_i)\in \mathbb{R}^m$  Pr">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hadoop初试">
-<meta property="og:url" content="http://yoursite.com/2018/04/20/Hadoop初试/index.html">
+<meta property="og:title" content="word2vec-Hierarchical Softmax">
+<meta property="og:url" content="http://yoursite.com/2018/04/26/word2vec-Hierarchical-Softmax/index.html">
 <meta property="og:site_name" content="独行侠">
-<meta property="og:description" content="1. HDFS(Hadoop Distributed File System)HDFS架构 数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。 Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。 Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。  HDFS操作 hadoop fs -ls">
+<meta property="og:description" content="word2vec中的两个模型如图所示，CBOW是已知当前词$w_t$的上下文$context(w_t)$，预测当前词$w_t$；SKip-gram恰好相反。  CBOW（Continuous Bag-of-Words Model）基本结构   Input Layer图中的 $context(w)$ 包含 $2c$ 个词向量：$v(context(w)_i)\in \mathbb{R}^m$  Pr">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-20T11:46:28.000Z">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-Hierarchical/model.PNG">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-Hierarchical/model1.PNG">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-Hierarchical/1.PNG">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-Hierarchical/2.PNG">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-Hierarchical/3.PNG">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-Hierarchical/4.PNG">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-Hierarchical/model2.PNG">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-Hierarchical/5.PNG">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-Hierarchical/6.PNG">
+<meta property="og:image" content="http://yoursite.com/img/word2vec-Hierarchical/7.PNG">
+<meta property="og:updated_time" content="2018-04-26T05:50:47.297Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hadoop初试">
-<meta name="twitter:description" content="1. HDFS(Hadoop Distributed File System)HDFS架构 数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。 Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。 Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。  HDFS操作 hadoop fs -ls">
+<meta name="twitter:title" content="word2vec-Hierarchical Softmax">
+<meta name="twitter:description" content="word2vec中的两个模型如图所示，CBOW是已知当前词$w_t$的上下文$context(w_t)$，预测当前词$w_t$；SKip-gram恰好相反。  CBOW（Continuous Bag-of-Words Model）基本结构   Input Layer图中的 $context(w)$ 包含 $2c$ 个词向量：$v(context(w)_i)\in \mathbb{R}^m$  Pr">
+<meta name="twitter:image" content="http://yoursite.com/img/word2vec-Hierarchical/model.PNG">
 
 
 
@@ -119,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/20/Hadoop初试/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/26/word2vec-Hierarchical-Softmax/"/>
 
 
 
 
 
-  <title>Hadoop初试 | 独行侠</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>word2vec-Hierarchical Softmax | 独行侠</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -232,7 +243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/20/Hadoop初试/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/26/word2vec-Hierarchical-Softmax/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xlwang">
@@ -249,7 +260,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hadoop初试</h1>
+          <h1 class="post-title" itemprop="name headline">word2vec-Hierarchical Softmax</h1>
         
 
         <div class="post-meta">
@@ -261,8 +272,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-20T18:51:46+08:00">
-                2018-04-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-26T11:27:46+08:00">
+                2018-04-26
               </time>
             
 
@@ -284,8 +295,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
                   </a>
                 </span>
 
@@ -321,43 +332,27 @@
       
 
       
-        <h3 id="1-HDFS-Hadoop-Distributed-File-System"><a href="#1-HDFS-Hadoop-Distributed-File-System" class="headerlink" title="1. HDFS(Hadoop Distributed File System)"></a>1. HDFS(Hadoop Distributed File System)</h3><h4 id="HDFS架构"><a href="#HDFS架构" class="headerlink" title="HDFS架构"></a>HDFS架构</h4><ul>
-<li>数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。</li>
-<li>Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。</li>
-<li>Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。</li>
+        <h2 id="word2vec中的两个模型"><a href="#word2vec中的两个模型" class="headerlink" title="word2vec中的两个模型"></a>word2vec中的两个模型</h2><p>如图所示，CBOW是已知当前词$w_t$的上下文$context(w_t)$，预测当前词$w_t$；SKip-gram恰好相反。<br><img src="/img/word2vec-Hierarchical/model.PNG" alt="&quot;Model&quot;"> </p>
+<h2 id="CBOW（Continuous-Bag-of-Words-Model）"><a href="#CBOW（Continuous-Bag-of-Words-Model）" class="headerlink" title="CBOW（Continuous Bag-of-Words Model）"></a>CBOW（Continuous Bag-of-Words Model）</h2><h3 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h3><p><img src="/img/word2vec-Hierarchical/model1.PNG" alt="&quot;CBOW&quot;"> </p>
+<ul>
+<li>Input Layer<br>图中的 $context(w)$ 包含 $2c$ 个词向量：$v(context(w)_i)\in \mathbb{R}^m$ </li>
+<li>Projection Layer<br>将输入层的 $2c$ 个词向量做累加，即 $X_w = \sum_{i=1}^{2c}v(context(w)_i) \in \mathbb{R}^m$</li>
+<li>Output Layer<br>Huffman树，叶子节点对应于词典 $D$ 中的每一个词，$N=|D|$，非叶子节点$N-1$个。</li>
 </ul>
-<h4 id="HDFS操作"><a href="#HDFS操作" class="headerlink" title="HDFS操作"></a>HDFS操作</h4><ul>
-<li>hadoop fs -ls <args></args></li>
-<li>hadoop fs -put localfile hdfsfile  上传本机文件到hdfs中的目录下</li>
-<li>hadoop fs -get hdfsfile localfile  下载hdfs中的文件至本机</li>
-<li>hadoop fs -test -e path 检查文件是否存在，如果存在，返回0</li>
-<li>参考 <a href="https://www.yiibai.com/hadoop/hadoop_command_reference.html#article-start" target="_blank" rel="noopener">https://www.yiibai.com/hadoop/hadoop_command_reference.html#article-start</a> </li>
+<h3 id="条件概率-p-w-context-w"><a href="#条件概率-p-w-context-w" class="headerlink" title="条件概率$p(w|context(w))$"></a>条件概率$p(w|context(w))$</h3><p>word2vec中，编码为0被定义为正类，1为负类(左节点为正，右节点为负)<br>$$label(p_i^w)=1-d_i^w, i=2,3,…,l_w$$<br>对于每一个节点，被分为正类的概率为：<br>$$\sigma(X_w^ \mathrm{T}\theta)=\frac{1}{1+e^{-X_w^ \mathrm{T}\theta}}$$<br>负类概率：<br>$$1-\sigma(X_w^ \mathrm{T}\theta)$$<br>对于词典 $D$ 中的任意一个词，Huffman树中都存在唯一一条从根节点到词 $w$ 的一条路径 $p^w$, 一共有 $l^w-1$ 个分支，每一次分支即为一次二分类。条件概率 $p(w|context(w))$ 被定义为<br>$$p(w|context(w))=\prod_{j=2}^{l^w}p(d_j^w|X_w,\theta_{j-1}^w)$$<br>其中<br>$$p(d_j^w|X_w,\theta_{j-1}^w)=<br>\begin{cases}<br>\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)&amp; d_j^w=0\\<br>1-\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)&amp; d_j^w=1<br>\end{cases}$$<br>可将其合并：<br>$$p(d_j^w|X_w,\theta_{j-1}^w)=[\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]^{1-d_j^w}\cdot [1-\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]^{d_j^w}$$<br><strong>$\sum_{w\in C}p(w|context(w))=1$ ，可以参考Hufffman树的结构，因为叶子节点都对应于每一个词，每两个词的概率相加等于它们的父节点，最后所有词相加即为根节点</strong></p>
+<h3 id="随机梯度上升"><a href="#随机梯度上升" class="headerlink" title="随机梯度上升"></a>随机梯度上升</h3><p>$$L = \sum_{w\in C}log\prod\ _{j=2}^{l^w}{[\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]^{1-d_j^w}\cdot [1-\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]^{d_j^w}}$$<br>$$L = \sum_{w\in C}\sum_{j=2}^{l^w}({(1-d_j^w)\cdot log[\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]+d_j^w\cdot log [1-\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]})$$<br><img src="/img/word2vec-Hierarchical/1.PNG" alt="&quot;Loss&quot;"><br>其中$w$代表字典中的一个词，$j$代表根节点到该词路径上的一个节点。为了使得概率最大化,对于一个随机样本 $(context(w),w)$ 求参数 $x_w,\theta_{j-2}^w$的偏导，这里的 $X_w$ 是 $context(w)$ 的词向量的累加，$\theta_{j-2}^w$ 对应于节点向量:<br><img src="/img/word2vec-Hierarchical/2.PNG" alt="&quot;Gradient&quot;"><br><img src="/img/word2vec-Hierarchical/3.PNG" alt="&quot;context&quot;"></p>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><p><img src="/img/word2vec-Hierarchical/4.PNG" alt="&quot;pseudo&quot;"></p>
+<h2 id="Skip-gram"><a href="#Skip-gram" class="headerlink" title="Skip-gram"></a>Skip-gram</h2><p>推导过程与CBOW类似</p>
+<h3 id="基本结构-1"><a href="#基本结构-1" class="headerlink" title="基本结构"></a>基本结构</h3><p><img src="/img/word2vec-Hierarchical/model2.PNG" alt="&quot;Skip-gram&quot;"></p>
+<ul>
+<li>Input Layer<br>中心词 $w$ 的词向量 $v(w)\in \mathbb{R}^m$</li>
+<li>Projection Layer<br>可忽略，并没有做什么</li>
+<li>Output Layer<br>Huffman树，叶子节点对应于词典 $D$ 中的每一个 词，$N=|D|$, 非叶子节点$N-1$个</li>
 </ul>
-<h3 id="2-Map-Reduce"><a href="#2-Map-Reduce" class="headerlink" title="2. Map-Reduce"></a>2. Map-Reduce</h3><p>三个阶段：Map,Shuffle,Reduce.</p>
-<h4 id="Map阶段"><a href="#Map阶段" class="headerlink" title="Map阶段"></a>Map阶段</h4><p>输入数据存储在HDFS中，处理后形成<key,value>若干小块。</key,value></p>
-<h4 id="Shuffle阶段"><a href="#Shuffle阶段" class="headerlink" title="Shuffle阶段"></a>Shuffle阶段</h4><p>Map阶段后，对key值进行了排序，再交给reduce，这个过程系统自动实现。</p>
-<h4 id="Reduce阶段"><a href="#Reduce阶段" class="headerlink" title="Reduce阶段"></a>Reduce阶段</h4><p>聚拢数据再处理，将输出结果返回到Hadoop服务器上。</p>
-<h3 id="3-Streaming"><a href="#3-Streaming" class="headerlink" title="3. Streaming"></a>3. Streaming</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p>任何语言编写的map, reduce程序能够在hadoop集群上运行，map/reduce程序只要遵循从标准输入stdin读，写出到标准输出stdout即可。</p>
-<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><pre><code>hadoop  jar /hadoop-mapreduce/hadoop-streaming.jar \\
--D mapred.job.name=&quot;xxx&quot; \\
--D mapreduce.job.queuename= xxx\\
--D mapred.map.tasks= x\\
--D mapred.reduce.tasks= x\\
--cmdenv CLASSPATH=\\
--input  xxx\\
--output  xxx\\
--mapper &quot;python mapper.py&quot; \\
--reducer &quot;python reducer.py&quot; \\
--file mapper.py \\
--file reducer.py
-</code></pre><h3 id="4-Python处理标准输入-输出相关"><a href="#4-Python处理标准输入-输出相关" class="headerlink" title="4. Python处理标准输入/输出相关"></a>4. Python处理标准输入/输出相关</h3><ul>
-<li>sys.argv: 用户输入的参数列表，程序外部输入</li>
-<li>os.system(‘command’): 会执行括号中的命令；如果成功，返回0，否则返回1；执行多条语句时，用;分隔</li>
-<li>sys.exit(1): 有错误退出</li>
-<li>sys.exit(0): 无错误退出</li>
-<li>str.join(sequence): str是连接的符号，sequence是连接的字符串序列</li>
-<li>调试时使用管道，模拟streaming, 在本地完成map/reduce程序的调试</li>
-</ul>
+<h3 id="条件概率-p-context-w-w"><a href="#条件概率-p-context-w-w" class="headerlink" title="条件概率 $p(context(w)|w)$"></a>条件概率 $p(context(w)|w)$</h3><p>$$p(w|context(w))=\prod_{u\in context(w)}p(u|w)$$<br>$p(u|w)$被定义为：<br>$$p(u|w) = \prod_{j=2}^{l^u}p(d_j^u|v(w),\theta_{j-1}^u)$$<br>其中：<br><img src="/img/word2vec-Hierarchical/5.PNG" alt="&quot;Skip_Loss&quot;"></p>
+<h3 id="随机梯度上升-1"><a href="#随机梯度上升-1" class="headerlink" title="随机梯度上升"></a>随机梯度上升</h3><p><img src="/img/word2vec-Hierarchical/6.PNG" alt="&quot;Skip_Gradient&quot;"></p>
+<h3 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h3><p><img src="/img/word2vec-Hierarchical/7.PNG" alt="&quot;Skip_Pseudo&quot;"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.csdn.net/itplus/article/details/37969979" target="_blank" rel="noopener">word2vec 中的数学原理详解</a></p>
 
       
     </div>
@@ -382,8 +377,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/02/模型评估/" rel="next" title="模型评估">
-                <i class="fa fa-chevron-left"></i> 模型评估
+              <a href="/2018/04/24/word2vec-基础语言模型/" rel="next" title="word2vec-基础语言模型">
+                <i class="fa fa-chevron-left"></i> word2vec-基础语言模型
               </a>
             
           </div>
@@ -391,10 +386,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/24/word2vec-基础语言模型/" rel="prev" title="word2vec-基础语言模型">
-                word2vec-基础语言模型 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -517,7 +508,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-HDFS-Hadoop-Distributed-File-System"><span class="nav-number">1.</span> <span class="nav-text">1. HDFS(Hadoop Distributed File System)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HDFS架构"><span class="nav-number">1.1.</span> <span class="nav-text">HDFS架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HDFS操作"><span class="nav-number">1.2.</span> <span class="nav-text">HDFS操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Map-Reduce"><span class="nav-number">2.</span> <span class="nav-text">2. Map-Reduce</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Map阶段"><span class="nav-number">2.1.</span> <span class="nav-text">Map阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shuffle阶段"><span class="nav-number">2.2.</span> <span class="nav-text">Shuffle阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reduce阶段"><span class="nav-number">2.3.</span> <span class="nav-text">Reduce阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Streaming"><span class="nav-number">3.</span> <span class="nav-text">3. Streaming</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#作用"><span class="nav-number">3.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令"><span class="nav-number">3.2.</span> <span class="nav-text">命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Python处理标准输入-输出相关"><span class="nav-number">4.</span> <span class="nav-text">4. Python处理标准输入/输出相关</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec中的两个模型"><span class="nav-number">1.</span> <span class="nav-text">word2vec中的两个模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW（Continuous-Bag-of-Words-Model）"><span class="nav-number">2.</span> <span class="nav-text">CBOW（Continuous Bag-of-Words Model）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本结构"><span class="nav-number">2.1.</span> <span class="nav-text">基本结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件概率-p-w-context-w"><span class="nav-number">2.2.</span> <span class="nav-text">条件概率$p(w|context(w))$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机梯度上升"><span class="nav-number">2.3.</span> <span class="nav-text">随机梯度上升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#伪代码"><span class="nav-number">2.4.</span> <span class="nav-text">伪代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skip-gram"><span class="nav-number">3.</span> <span class="nav-text">Skip-gram</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本结构-1"><span class="nav-number">3.1.</span> <span class="nav-text">基本结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件概率-p-context-w-w"><span class="nav-number">3.2.</span> <span class="nav-text">条件概率 $p(context(w)|w)$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机梯度上升-1"><span class="nav-number">3.3.</span> <span class="nav-text">随机梯度上升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#伪代码-1"><span class="nav-number">3.4.</span> <span class="nav-text">伪代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

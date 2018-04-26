@@ -232,6 +232,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/26/word2vec-Hierarchical-Softmax/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xlwang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独行侠">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/26/word2vec-Hierarchical-Softmax/" itemprop="url">word2vec-Hierarchical Softmax</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-26T11:27:46+08:00">
+                2018-04-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="word2vec中的两个模型"><a href="#word2vec中的两个模型" class="headerlink" title="word2vec中的两个模型"></a>word2vec中的两个模型</h2><p>如图所示，CBOW是已知当前词$w_t$的上下文$context(w_t)$，预测当前词$w_t$；SKip-gram恰好相反。<br><img src="/img/word2vec-Hierarchical/model.PNG" alt="&quot;Model&quot;"> </p>
+<h2 id="CBOW（Continuous-Bag-of-Words-Model）"><a href="#CBOW（Continuous-Bag-of-Words-Model）" class="headerlink" title="CBOW（Continuous Bag-of-Words Model）"></a>CBOW（Continuous Bag-of-Words Model）</h2><h3 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h3><p><img src="/img/word2vec-Hierarchical/model1.PNG" alt="&quot;CBOW&quot;"> </p>
+<ul>
+<li>Input Layer<br>图中的 $context(w)$ 包含 $2c$ 个词向量：$v(context(w)_i)\in \mathbb{R}^m$ </li>
+<li>Projection Layer<br>将输入层的 $2c$ 个词向量做累加，即 $X_w = \sum_{i=1}^{2c}v(context(w)_i) \in \mathbb{R}^m$</li>
+<li>Output Layer<br>Huffman树，叶子节点对应于词典 $D$ 中的每一个词，$N=|D|$，非叶子节点$N-1$个。</li>
+</ul>
+<h3 id="条件概率-p-w-context-w"><a href="#条件概率-p-w-context-w" class="headerlink" title="条件概率$p(w|context(w))$"></a>条件概率$p(w|context(w))$</h3><p>word2vec中，编码为0被定义为正类，1为负类(左节点为正，右节点为负)<br>$$label(p_i^w)=1-d_i^w, i=2,3,…,l_w$$<br>对于每一个节点，被分为正类的概率为：<br>$$\sigma(X_w^ \mathrm{T}\theta)=\frac{1}{1+e^{-X_w^ \mathrm{T}\theta}}$$<br>负类概率：<br>$$1-\sigma(X_w^ \mathrm{T}\theta)$$<br>对于词典 $D$ 中的任意一个词，Huffman树中都存在唯一一条从根节点到词 $w$ 的一条路径 $p^w$, 一共有 $l^w-1$ 个分支，每一次分支即为一次二分类。条件概率 $p(w|context(w))$ 被定义为<br>$$p(w|context(w))=\prod_{j=2}^{l^w}p(d_j^w|X_w,\theta_{j-1}^w)$$<br>其中<br>$$p(d_j^w|X_w,\theta_{j-1}^w)=<br>\begin{cases}<br>\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)&amp; d_j^w=0\\<br>1-\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)&amp; d_j^w=1<br>\end{cases}$$<br>可将其合并：<br>$$p(d_j^w|X_w,\theta_{j-1}^w)=[\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]^{1-d_j^w}\cdot [1-\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]^{d_j^w}$$<br><strong>$\sum_{w\in C}p(w|context(w))=1$ ，可以参考Hufffman树的结构，因为叶子节点都对应于每一个词，每两个词的概率相加等于它们的父节点，最后所有词相加即为根节点</strong></p>
+<h3 id="随机梯度上升"><a href="#随机梯度上升" class="headerlink" title="随机梯度上升"></a>随机梯度上升</h3><p>$$L = \sum_{w\in C}log\prod\ _{j=2}^{l^w}{[\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]^{1-d_j^w}\cdot [1-\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]^{d_j^w}}$$<br>$$L = \sum_{w\in C}\sum_{j=2}^{l^w}({(1-d_j^w)\cdot log[\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]+d_j^w\cdot log [1-\sigma(X_w^ \mathrm{ T }\theta_{j-1}^w)]})$$<br><img src="/img/word2vec-Hierarchical/1.PNG" alt="&quot;Loss&quot;"><br>其中$w$代表字典中的一个词，$j$代表根节点到该词路径上的一个节点。为了使得概率最大化,对于一个随机样本 $(context(w),w)$ 求参数 $x_w,\theta_{j-2}^w$的偏导，这里的 $X_w$ 是 $context(w)$ 的词向量的累加，$\theta_{j-2}^w$ 对应于节点向量:<br><img src="/img/word2vec-Hierarchical/2.PNG" alt="&quot;Gradient&quot;"><br><img src="/img/word2vec-Hierarchical/3.PNG" alt="&quot;context&quot;"></p>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><p><img src="/img/word2vec-Hierarchical/4.PNG" alt="&quot;pseudo&quot;"></p>
+<h2 id="Skip-gram"><a href="#Skip-gram" class="headerlink" title="Skip-gram"></a>Skip-gram</h2><p>推导过程与CBOW类似</p>
+<h3 id="基本结构-1"><a href="#基本结构-1" class="headerlink" title="基本结构"></a>基本结构</h3><p><img src="/img/word2vec-Hierarchical/model2.PNG" alt="&quot;Skip-gram&quot;"></p>
+<ul>
+<li>Input Layer<br>中心词 $w$ 的词向量 $v(w)\in \mathbb{R}^m$</li>
+<li>Projection Layer<br>可忽略，并没有做什么</li>
+<li>Output Layer<br>Huffman树，叶子节点对应于词典 $D$ 中的每一个 词，$N=|D|$, 非叶子节点$N-1$个</li>
+</ul>
+<h3 id="条件概率-p-context-w-w"><a href="#条件概率-p-context-w-w" class="headerlink" title="条件概率 $p(context(w)|w)$"></a>条件概率 $p(context(w)|w)$</h3><p>$$p(w|context(w))=\prod_{u\in context(w)}p(u|w)$$<br>$p(u|w)$被定义为：<br>$$p(u|w) = \prod_{j=2}^{l^u}p(d_j^u|v(w),\theta_{j-1}^u)$$<br>其中：<br><img src="/img/word2vec-Hierarchical/5.PNG" alt="&quot;Skip_Loss&quot;"></p>
+<h3 id="随机梯度上升-1"><a href="#随机梯度上升-1" class="headerlink" title="随机梯度上升"></a>随机梯度上升</h3><p><img src="/img/word2vec-Hierarchical/6.PNG" alt="&quot;Skip_Gradient&quot;"></p>
+<h3 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h3><p><img src="/img/word2vec-Hierarchical/7.PNG" alt="&quot;Skip_Pseudo&quot;"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.csdn.net/itplus/article/details/37969979" target="_blank" rel="noopener">word2vec 中的数学原理详解</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/24/word2vec-基础语言模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -338,7 +500,7 @@
 <h4 id="2-2-1-one-hot-representation"><a href="#2-2-1-one-hot-representation" class="headerlink" title="2.2.1. one-hot representation"></a>2.2.1. one-hot representation</h4><p>最简单的一种方式，假设字典 $D$ 的大小为 $N$, 对于字典(语料 $C$ 中不重复的词)中的每个元素，都对应于一个 $N$维的向量，该向量中只有一个位置为1，其余都为0，1的位置即是该元素的索引。</p>
 <p><strong>缺点：稀疏存储，维度高；会造成任意两个词之间的孤立性</strong></p>
 <h4 id="2-2-2-distributed-representation"><a href="#2-2-2-distributed-representation" class="headerlink" title="2.2.2. distributed representation"></a>2.2.2. distributed representation</h4><p>把每一个词映射成一个固定长度的短向量，在这个词向量的空间中，根据词之间的距离来判断它们之间的相似性。这里的词可以替换为句子或者文档。<br>常见的方法：LSA, LDA， 神经网络……</p>
-<h3 id="2-3-神经网络模型"><a href="#2-3-神经网络模型" class="headerlink" title="2.3. 神经网络模型"></a>2.3. 神经网络模型</h3><p><img src="/img/word2vec-基础语言模型.PNG" alt="&quot;Model&quot;">  </p>
+<h3 id="2-3-神经网络模型"><a href="#2-3-神经网络模型" class="headerlink" title="2.3. 神经网络模型"></a>2.3. 神经网络模型</h3><p><img src="/img/word2vec-基础语言模型/word2vec-基础语言模型.PNG" alt="&quot;Model&quot;">  </p>
 <ul>
 <li>Input Layer:<br>$$X_w = \bigl(\begin{smallmatrix}<br>v(context(w)_1)\<br>.\<br>.\<br>.\<br>v(context(w)_{n-1})<br>\end{smallmatrix}\bigr)$$<br>其中$w(x)$ 代表词$x$ 的词向量，$X_w\in \mathbb{R}^{(n-1)*m}$, $m$ 为词向量的维度。</li>
 <li>Hidden Layer:<br>$$z_w = tanh(WX_w+p)$$<br>其中$W\in \mathbb{R}^{n_h\times (n-1)m}, p\in \mathbb{R}^{n_h}$</li>
@@ -803,7 +965,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
