@@ -79,19 +79,17 @@
 
 
 
-<meta name="description" content="1. n-gram模型核心假设：一个词出现的概率只与它前面的n个词相关，即：$$P(w_k|w_1,…,w_{k-1}) \approx P(w_k|w_{k-n+1},…,w_{k-1})$$根据大数定律，当语料库足够大时，概率可以由以下公式得出：$$P(w_k|w_1,…,w_{k-1}) = \frac{count(W_{k-n+1},…,W_{k})}{count(W_{k-n+1},…,">
+<meta name="description" content="推荐系统里的三种技术：Neighborhood Based MethodsMachine Learning MethodsMatrix-Factorization Based Methods模型word2vec原始数据(non-textual)得到word embedding。相似点：word2vec中的sententces可以和每一个用户的历史偏好对应，word对应于每一个item。 推荐过程K">
 <meta property="og:type" content="article">
-<meta property="og:title" content="word2vec-基础语言模型">
-<meta property="og:url" content="http://yoursite.com/2018/04/24/word2vec-基础语言模型/index.html">
+<meta property="og:title" content="From Word Embeddings to Item Recommendation">
+<meta property="og:url" content="http://yoursite.com/2018/05/08/From-Word-Embeddings-to-Item-Recommendation/index.html">
 <meta property="og:site_name" content="独行侠">
-<meta property="og:description" content="1. n-gram模型核心假设：一个词出现的概率只与它前面的n个词相关，即：$$P(w_k|w_1,…,w_{k-1}) \approx P(w_k|w_{k-n+1},…,w_{k-1})$$根据大数定律，当语料库足够大时，概率可以由以下公式得出：$$P(w_k|w_1,…,w_{k-1}) = \frac{count(W_{k-n+1},…,W_{k})}{count(W_{k-n+1},…,">
+<meta property="og:description" content="推荐系统里的三种技术：Neighborhood Based MethodsMachine Learning MethodsMatrix-Factorization Based Methods模型word2vec原始数据(non-textual)得到word embedding。相似点：word2vec中的sententces可以和每一个用户的历史偏好对应，word对应于每一个item。 推荐过程K">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/img/word2vec-基础语言模型/word2vec-基础语言模型.PNG">
-<meta property="og:updated_time" content="2018-04-26T03:46:51.749Z">
+<meta property="og:updated_time" content="2018-05-08T02:42:41.972Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="word2vec-基础语言模型">
-<meta name="twitter:description" content="1. n-gram模型核心假设：一个词出现的概率只与它前面的n个词相关，即：$$P(w_k|w_1,…,w_{k-1}) \approx P(w_k|w_{k-n+1},…,w_{k-1})$$根据大数定律，当语料库足够大时，概率可以由以下公式得出：$$P(w_k|w_1,…,w_{k-1}) = \frac{count(W_{k-n+1},…,W_{k})}{count(W_{k-n+1},…,">
-<meta name="twitter:image" content="http://yoursite.com/img/word2vec-基础语言模型/word2vec-基础语言模型.PNG">
+<meta name="twitter:title" content="From Word Embeddings to Item Recommendation">
+<meta name="twitter:description" content="推荐系统里的三种技术：Neighborhood Based MethodsMachine Learning MethodsMatrix-Factorization Based Methods模型word2vec原始数据(non-textual)得到word embedding。相似点：word2vec中的sententces可以和每一个用户的历史偏好对应，word对应于每一个item。 推荐过程K">
 
 
 
@@ -121,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/24/word2vec-基础语言模型/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/08/From-Word-Embeddings-to-Item-Recommendation/"/>
 
 
 
 
 
-  <title>word2vec-基础语言模型 | 独行侠</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>From Word Embeddings to Item Recommendation | 独行侠</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -234,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/24/word2vec-基础语言模型/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/08/From-Word-Embeddings-to-Item-Recommendation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xlwang">
@@ -251,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">word2vec-基础语言模型</h1>
+          <h1 class="post-title" itemprop="name headline">From Word Embeddings to Item Recommendation</h1>
         
 
         <div class="post-meta">
@@ -263,8 +261,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-24T20:31:20+08:00">
-                2018-04-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-08T10:27:36+08:00">
+                2018-05-08
               </time>
             
 
@@ -286,8 +284,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index">
-                    <span itemprop="name">NLP</span>
+                  <a href="/categories/论文笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">论文笔记</span>
                   </a>
                 </span>
 
@@ -323,29 +321,24 @@
       
 
       
-        <h2 id="1-n-gram模型"><a href="#1-n-gram模型" class="headerlink" title="1. n-gram模型"></a>1. n-gram模型</h2><p><strong>核心假设：</strong>一个词出现的概率只与它前面的n个词相关，即：<br>$$P(w_k|w_1,…,w_{k-1}) \approx P(w_k|w_{k-n+1},…,w_{k-1})$$<br>根据大数定律，当语料库足够大时，概率可以由以下公式得出：<br>$$P(w_k|w_1,…,w_{k-1}) = \frac{count(W_{k-n+1},…,W_{k})}{count(W_{k-n+1},…,W_{k-1})}$$<br>这样可以使得参数更少，统计更加容易。</p>
-<ul>
-<li>unigram：n=1</li>
-<li>bigram: n=2</li>
-<li>trigram: n=3</li>
-</ul>
-<p><strong>平滑：以下情况需要平滑<br>$count(W_{k-n+1},…,W_{k})=0$<br>or<br>$count(W_{k-n+1},…,W_{k})=count(W_{k-n+1},…,W_{k-1})$</strong></p>
-<p><strong>总结：利用语料中各个词汇出现的次数，计算相应的概率值，用于对一个新词的预测。</strong></p>
-<h2 id="2-机器学习–神经网络"><a href="#2-机器学习–神经网络" class="headerlink" title="2. 机器学习–神经网络"></a>2. 机器学习–神经网络</h2><h3 id="2-1-核心目标：最小化损失函数"><a href="#2-1-核心目标：最小化损失函数" class="headerlink" title="2.1. 核心目标：最小化损失函数"></a>2.1. 核心目标：最小化损失函数</h3><p>$(context(w), w)$对应于一个训练样本，似然函数最大化：<br>$$\prod_{w \in C}P(w|context(w))$$<br>其中，$C$为语料库，context(w)为$w$的上下文信息。在n-gram中，对应于前n个词的个数。<br>$$L = \sum_{w \in C}log(w|context(w))$$</p>
-<h3 id="2-2-词向量"><a href="#2-2-词向量" class="headerlink" title="2.2. 词向量"></a>2.2. 词向量</h3><p>目标：将语言向量化，以便机器处理</p>
-<h4 id="2-2-1-one-hot-representation"><a href="#2-2-1-one-hot-representation" class="headerlink" title="2.2.1. one-hot representation"></a>2.2.1. one-hot representation</h4><p>最简单的一种方式，假设字典 $D$ 的大小为 $N$, 对于字典(语料 $C$ 中不重复的词)中的每个元素，都对应于一个 $N$维的向量，该向量中只有一个位置为1，其余都为0，1的位置即是该元素的索引。</p>
-<p><strong>缺点：稀疏存储，维度高；会造成任意两个词之间的孤立性</strong></p>
-<h4 id="2-2-2-distributed-representation"><a href="#2-2-2-distributed-representation" class="headerlink" title="2.2.2. distributed representation"></a>2.2.2. distributed representation</h4><p>把每一个词映射成一个固定长度的短向量，在这个词向量的空间中，根据词之间的距离来判断它们之间的相似性。这里的词可以替换为句子或者文档。<br>常见的方法：LSA, LDA， 神经网络……</p>
-<h3 id="2-3-神经网络模型"><a href="#2-3-神经网络模型" class="headerlink" title="2.3. 神经网络模型"></a>2.3. 神经网络模型</h3><p><img src="/img/word2vec-基础语言模型/word2vec-基础语言模型.PNG" alt="&quot;Model&quot;">  </p>
-<ul>
-<li>Input Layer:<br>$$X_w = \bigl(\begin{smallmatrix}<br>v(context(w)_1)\<br>.\<br>.\<br>.\<br>v(context(w)_{n-1})<br>\end{smallmatrix}\bigr)$$<br>其中$w(x)$ 代表词$x$ 的词向量，$X_w\in \mathbb{R}^{(n-1)*m}$, $m$ 为词向量的维度。</li>
-<li>Hidden Layer:<br>$$z_w = tanh(WX_w+p)$$<br>其中$W\in \mathbb{R}^{n_h\times (n-1)m}, p\in \mathbb{R}^{n_h}$</li>
-<li><p>Output Layer：<br>$$y_w = Uz_w + q$$<br>其中$U\in \mathbb{R}^{N\times n_h}, q\in \mathbb{R}^N$, $N$代表了字典$D$的大小。</p>
-</li>
-<li><p>字典 $D$ 中每一个词的概率为：<br>$$p(w|context(w)) = \frac{e^{y_{w,i_w}}}{\sum_{i=1}^Ne^{y_{w,i}}}$$<br>其中 $i_w$ 为词 $w$ 在词典$D$中的索引。</p>
-</li>
-</ul>
-<p><strong>优势：1. 相似的词或者句子的概率很相近；2. 平滑处理</strong></p>
+        <h2 id="推荐系统里的三种技术："><a href="#推荐系统里的三种技术：" class="headerlink" title="推荐系统里的三种技术："></a>推荐系统里的三种技术：</h2><h3 id="Neighborhood-Based-Methods"><a href="#Neighborhood-Based-Methods" class="headerlink" title="Neighborhood Based Methods"></a>Neighborhood Based Methods</h3><h3 id="Machine-Learning-Methods"><a href="#Machine-Learning-Methods" class="headerlink" title="Machine Learning Methods"></a>Machine Learning Methods</h3><h3 id="Matrix-Factorization-Based-Methods"><a href="#Matrix-Factorization-Based-Methods" class="headerlink" title="Matrix-Factorization Based Methods"></a>Matrix-Factorization Based Methods</h3><h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><h3 id="word2vec"><a href="#word2vec" class="headerlink" title="word2vec"></a>word2vec</h3><p>原始数据(non-textual)得到word embedding。<br>相似点：word2vec中的sententces可以和每一个用户的历史偏好对应，word对应于每一个item。</p>
+<h3 id="推荐过程"><a href="#推荐过程" class="headerlink" title="推荐过程"></a>推荐过程</h3><h4 id="K-Nearest-Items-KNI"><a href="#K-Nearest-Items-KNI" class="headerlink" title="K-Nearest Items (KNI)"></a>K-Nearest Items (KNI)</h4><p>跟传统的Content-Based Filtering很类似。根据词向量的cosine值，计算目标用户和item的相似度，找出top-k对应的item</p>
+<h4 id="N-Nearest-Users-NN"><a href="#N-Nearest-Users-NN" class="headerlink" title="N-Nearest Users(NN)"></a>N-Nearest Users(NN)</h4><p>传统的User-Based Collaborative Filtering: 选出与目标用户最相似的邻居，然后将它的历史偏好作为推荐。</p>
+<ol>
+<li>根据用户$u_1$的词向量，计算它的最相近的用户$u_2$</li>
+<li>$u_2$的历史序列进行推荐</li>
+</ol>
+<h4 id="N-nearest-Users-And-K-Nearest-Items-KIU"><a href="#N-nearest-Users-And-K-Nearest-Items-KIU" class="headerlink" title="N-nearest Users And K-Nearest Items(KIU)"></a>N-nearest Users And K-Nearest Items(KIU)</h4><p>前面两种方法的结合</p>
+<ol>
+<li>先找出top-N个最近邻居</li>
+<li>计算目标用户和邻居的top-K的item</li>
+</ol>
+<h2 id="模型评估"><a href="#模型评估" class="headerlink" title="模型评估"></a>模型评估</h2><p>prediction coverage： 有一定比例的用户独立于推荐，例如没有偏好历史</p>
+<ol>
+<li>KNI效果最好，KIU其次，可能原因是用户数量过少，在向量空间中区别不太明显</li>
+<li>skip-gram的效果略好于CBOW</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>感觉核心的创新点还是使用了word2vec产生词向量，利用词向量之间的cosine量化相似度，后面的推荐策略就是传统的召回方法。论文中把user_id也作为了输入，来源于另外一篇论文Distributed Representations of Sentences and Documents，doc2vec的模型。</p>
 
       
     </div>
@@ -370,8 +363,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/20/Hadoop初试/" rel="next" title="Hadoop初试">
-                <i class="fa fa-chevron-left"></i> Hadoop初试
+              <a href="/2018/04/26/word2vec-Hierarchical-Softmax/" rel="next" title="word2vec-Hierarchical Softmax">
+                <i class="fa fa-chevron-left"></i> word2vec-Hierarchical Softmax
               </a>
             
           </div>
@@ -379,10 +372,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/26/word2vec-Hierarchical-Softmax/" rel="prev" title="word2vec-Hierarchical Softmax">
-                word2vec-Hierarchical Softmax <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -505,7 +494,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-n-gram模型"><span class="nav-number">1.</span> <span class="nav-text">1. n-gram模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-机器学习–神经网络"><span class="nav-number">2.</span> <span class="nav-text">2. 机器学习–神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-核心目标：最小化损失函数"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 核心目标：最小化损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-词向量"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 词向量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-one-hot-representation"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1. one-hot representation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-distributed-representation"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2. distributed representation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-神经网络模型"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. 神经网络模型</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐系统里的三种技术："><span class="nav-number">1.</span> <span class="nav-text">推荐系统里的三种技术：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Neighborhood-Based-Methods"><span class="nav-number">1.1.</span> <span class="nav-text">Neighborhood Based Methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Machine-Learning-Methods"><span class="nav-number">1.2.</span> <span class="nav-text">Machine Learning Methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Matrix-Factorization-Based-Methods"><span class="nav-number">1.3.</span> <span class="nav-text">Matrix-Factorization Based Methods</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型"><span class="nav-number">2.</span> <span class="nav-text">模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec"><span class="nav-number">2.1.</span> <span class="nav-text">word2vec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推荐过程"><span class="nav-number">2.2.</span> <span class="nav-text">推荐过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#K-Nearest-Items-KNI"><span class="nav-number">2.2.1.</span> <span class="nav-text">K-Nearest Items (KNI)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#N-Nearest-Users-NN"><span class="nav-number">2.2.2.</span> <span class="nav-text">N-Nearest Users(NN)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#N-nearest-Users-And-K-Nearest-Items-KIU"><span class="nav-number">2.2.3.</span> <span class="nav-text">N-nearest Users And K-Nearest Items(KIU)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型评估"><span class="nav-number">3.</span> <span class="nav-text">模型评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>

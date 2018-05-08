@@ -232,6 +232,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/08/From-Word-Embeddings-to-Item-Recommendation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xlwang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独行侠">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/08/From-Word-Embeddings-to-Item-Recommendation/" itemprop="url">From Word Embeddings to Item Recommendation</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-08T10:27:36+08:00">
+                2018-05-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">论文笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="推荐系统里的三种技术："><a href="#推荐系统里的三种技术：" class="headerlink" title="推荐系统里的三种技术："></a>推荐系统里的三种技术：</h2><h3 id="Neighborhood-Based-Methods"><a href="#Neighborhood-Based-Methods" class="headerlink" title="Neighborhood Based Methods"></a>Neighborhood Based Methods</h3><h3 id="Machine-Learning-Methods"><a href="#Machine-Learning-Methods" class="headerlink" title="Machine Learning Methods"></a>Machine Learning Methods</h3><h3 id="Matrix-Factorization-Based-Methods"><a href="#Matrix-Factorization-Based-Methods" class="headerlink" title="Matrix-Factorization Based Methods"></a>Matrix-Factorization Based Methods</h3><h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><h3 id="word2vec"><a href="#word2vec" class="headerlink" title="word2vec"></a>word2vec</h3><p>原始数据(non-textual)得到word embedding。<br>相似点：word2vec中的sententces可以和每一个用户的历史偏好对应，word对应于每一个item。</p>
+<h3 id="推荐过程"><a href="#推荐过程" class="headerlink" title="推荐过程"></a>推荐过程</h3><h4 id="K-Nearest-Items-KNI"><a href="#K-Nearest-Items-KNI" class="headerlink" title="K-Nearest Items (KNI)"></a>K-Nearest Items (KNI)</h4><p>跟传统的Content-Based Filtering很类似。根据词向量的cosine值，计算目标用户和item的相似度，找出top-k对应的item</p>
+<h4 id="N-Nearest-Users-NN"><a href="#N-Nearest-Users-NN" class="headerlink" title="N-Nearest Users(NN)"></a>N-Nearest Users(NN)</h4><p>传统的User-Based Collaborative Filtering: 选出与目标用户最相似的邻居，然后将它的历史偏好作为推荐。</p>
+<ol>
+<li>根据用户$u_1$的词向量，计算它的最相近的用户$u_2$</li>
+<li>$u_2$的历史序列进行推荐</li>
+</ol>
+<h4 id="N-nearest-Users-And-K-Nearest-Items-KIU"><a href="#N-nearest-Users-And-K-Nearest-Items-KIU" class="headerlink" title="N-nearest Users And K-Nearest Items(KIU)"></a>N-nearest Users And K-Nearest Items(KIU)</h4><p>前面两种方法的结合</p>
+<ol>
+<li>先找出top-N个最近邻居</li>
+<li>计算目标用户和邻居的top-K的item</li>
+</ol>
+<h2 id="模型评估"><a href="#模型评估" class="headerlink" title="模型评估"></a>模型评估</h2><p>prediction coverage： 有一定比例的用户独立于推荐，例如没有偏好历史</p>
+<ol>
+<li>KNI效果最好，KIU其次，可能原因是用户数量过少，在向量空间中区别不太明显</li>
+<li>skip-gram的效果略好于CBOW</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>感觉核心的创新点还是使用了word2vec产生词向量，利用词向量之间的cosine量化相似度，后面的推荐策略就是传统的召回方法。论文中把user_id也作为了输入，来源于另外一篇论文Distributed Representations of Sentences and Documents，doc2vec的模型。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/26/word2vec-Hierarchical-Softmax/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -965,7 +1124,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -976,7 +1135,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
