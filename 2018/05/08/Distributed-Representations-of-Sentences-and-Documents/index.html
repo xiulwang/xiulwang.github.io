@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="独行侠">
 <meta property="og:description" content="核心思想word2vec只是从词的维度去进行建模，这里考虑了Paragraph Vector，适用于任意长度的文章段落。 模型Learning Vector Representation of words以CBOW为例，给定一个句子$w_1,w_2,…,w_T$, 词向量模型的目标函数为$$\frac{1}{T}\sum_{t=k}^{T-k}logp(w_t|w_{t-k},…,w_{t+k})">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-08T06:15:44.884Z">
+<meta property="og:updated_time" content="2018-05-08T06:23:24.141Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Distributed Representations of Sentences and Documents">
 <meta name="twitter:description" content="核心思想word2vec只是从词的维度去进行建模，这里考虑了Paragraph Vector，适用于任意长度的文章段落。 模型Learning Vector Representation of words以CBOW为例，给定一个句子$w_1,w_2,…,w_T$, 词向量模型的目标函数为$$\frac{1}{T}\sum_{t=k}^{T-k}logp(w_t|w_{t-k},…,w_{t+k})">
@@ -322,7 +322,7 @@
 
       
         <h2 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h2><p>word2vec只是从词的维度去进行建模，这里考虑了Paragraph Vector，适用于任意长度的文章段落。</p>
-<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><h3 id="Learning-Vector-Representation-of-words"><a href="#Learning-Vector-Representation-of-words" class="headerlink" title="Learning Vector Representation of words"></a>Learning Vector Representation of words</h3><p>以CBOW为例，给定一个句子$w_1,w_2,…,w_T$, 词向量模型的目标函数为<br>$$\frac{1}{T}\sum_{t=k}^{T-k}logp(w_t|w_{t-k},…,w_{t+k})$$<br>归一化<br>$$p(w_t|w_{t-k},…,w_{t+k})=\frac{e^{y_{w_t}}}{\sum_{i}e^{y_i}}$$<br>每一个$y_i$计算方式：<br>$y = b + Uh(w_{t-k},…,w_{t+k};W)$<br>其中$h$可以看做concatenation(把向量连接起来)或者average(词向量平均)操作<br>如果使用hierarchical softmax模型，那么输出就是一棵Binary Huffaman Tree，这个就是word2vec模型，具体参考<a href="https://xiulwang.github.io/2018/04/26/word2vec-Hierarchical-Softmax/" target="_blank" rel="noopener">word2vec-Hierarchical Softmax</a></p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><h3 id="Learning-Vector-Representation-of-words"><a href="#Learning-Vector-Representation-of-words" class="headerlink" title="Learning Vector Representation of words"></a>Learning Vector Representation of words</h3><p>以CBOW为例，给定一个句子$w_1,w_2,…,w_T$, 词向量模型的目标函数为<br>$$\frac{1}{T}\sum_{t=k}^{T-k}logp(w_t|w_{t-k},…,w_{t+k})$$<br>归一化<br>$$p(w_t|w_{t-k},…,w_{t+k})=\frac{e^{y_{w_t}}}{\sum_{i}e^{y_i}}$$<br>每一个$y_i$计算方式：<br>$$y = b + Uh(w_{t-k},…,w_{t+k};W)$$<br>其中$h$可以看做concatenation(把向量连接起来)或者average(词向量平均)操作<br>如果使用hierarchical softmax模型，那么输出就是一棵Binary Huffaman Tree，这个就是word2vec模型，具体参考<a href="https://xiulwang.github.io/2018/04/26/word2vec-Hierarchical-Softmax/" target="_blank" rel="noopener">word2vec-Hierarchical Softmax</a></p>
 <h3 id="Paragraph-Vector-A-distributed-memory-model"><a href="#Paragraph-Vector-A-distributed-memory-model" class="headerlink" title="Paragraph Vector: A distributed memory model"></a>Paragraph Vector: A distributed memory model</h3><p>每一个paragraph都被映射成为一个单独的向量。每一个词对应于矩阵$W$中的某一列，每一个paragraph对应于矩阵$D$中的每一列。其他的跟word2vec都很相似，唯一的改变在于<br>$$y = b + Uh(w_{t-k},…,w_{t+k};W;D)$$<br>paragraph vector只在paragraph内共享，而词向量矩阵$W$可以across paragraph。</p>
 <h3 id="Paragraph-Vector-without-word-ordering-Distributed-bag-of-words"><a href="#Paragraph-Vector-without-word-ordering-Distributed-bag-of-words" class="headerlink" title="Paragraph Vector without word ordering: Distributed bag of words"></a>Paragraph Vector without word ordering: Distributed bag of words</h3><p>这个跟skip-gram模型很相似</p>
 
@@ -358,6 +358,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/10/Redis初识1/" rel="prev" title="Redis初识1">
+                Redis初识1 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -434,7 +438,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -445,7 +449,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
