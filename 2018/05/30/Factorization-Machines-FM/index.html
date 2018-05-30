@@ -79,17 +79,21 @@
 
 
 
-<meta name="description" content="1. HDFS(Hadoop Distributed File System)HDFS架构 数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。 Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。 Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。  HDFS操作 hadoop fs -ls">
+<meta name="description" content="稀疏性推荐系统中数据的很多特征分量都为0，只有少数维度具有统计值。 模型不考虑特征分量$x_i$和$x_j$的相互关系，即相互独立. $$f(x) = w_0+\sum_{i=1}^{n}w_ix_i$$ 如果要考虑两个特征分量间的相互联系，则：$$f(x) = w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n-1}\sum_{j=i+1}^{n}w_{ij}x_ix_">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hadoop初试">
-<meta property="og:url" content="http://yoursite.com/2018/04/20/Hadoop初试/index.html">
+<meta property="og:title" content="Factorization Machines(FM)">
+<meta property="og:url" content="http://yoursite.com/2018/05/30/Factorization-Machines-FM/index.html">
 <meta property="og:site_name" content="独行侠">
-<meta property="og:description" content="1. HDFS(Hadoop Distributed File System)HDFS架构 数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。 Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。 Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。  HDFS操作 hadoop fs -ls">
+<meta property="og:description" content="稀疏性推荐系统中数据的很多特征分量都为0，只有少数维度具有统计值。 模型不考虑特征分量$x_i$和$x_j$的相互关系，即相互独立. $$f(x) = w_0+\sum_{i=1}^{n}w_ix_i$$ 如果要考虑两个特征分量间的相互联系，则：$$f(x) = w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n-1}\sum_{j=i+1}^{n}w_{ij}x_ix_">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-20T11:46:28.000Z">
+<meta property="og:image" content="http://yoursite.com/img/Factorization-Machines-FM/1.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Factorization-Machines-FM/2.PNG">
+<meta property="og:image" content="http://yoursite.com/img/Factorization-Machines-FM/3.PNG">
+<meta property="og:updated_time" content="2018-05-30T07:54:26.507Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hadoop初试">
-<meta name="twitter:description" content="1. HDFS(Hadoop Distributed File System)HDFS架构 数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。 Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。 Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。  HDFS操作 hadoop fs -ls">
+<meta name="twitter:title" content="Factorization Machines(FM)">
+<meta name="twitter:description" content="稀疏性推荐系统中数据的很多特征分量都为0，只有少数维度具有统计值。 模型不考虑特征分量$x_i$和$x_j$的相互关系，即相互独立. $$f(x) = w_0+\sum_{i=1}^{n}w_ix_i$$ 如果要考虑两个特征分量间的相互联系，则：$$f(x) = w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n-1}\sum_{j=i+1}^{n}w_{ij}x_ix_">
+<meta name="twitter:image" content="http://yoursite.com/img/Factorization-Machines-FM/1.PNG">
 
 
 
@@ -119,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/20/Hadoop初试/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/30/Factorization-Machines-FM/"/>
 
 
 
 
 
-  <title>Hadoop初试 | 独行侠</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Factorization Machines(FM) | 独行侠</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -232,7 +236,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/20/Hadoop初试/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/30/Factorization-Machines-FM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xlwang">
@@ -249,7 +253,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hadoop初试</h1>
+          <h1 class="post-title" itemprop="name headline">Factorization Machines(FM)</h1>
         
 
         <div class="post-meta">
@@ -261,8 +265,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-20T18:51:46+08:00">
-                2018-04-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-30T15:32:28+08:00">
+                2018-05-30
               </time>
             
 
@@ -284,8 +288,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
+                  <a href="/categories/推荐系统/" itemprop="url" rel="index">
+                    <span itemprop="name">推荐系统</span>
                   </a>
                 </span>
 
@@ -321,43 +325,22 @@
       
 
       
-        <h3 id="1-HDFS-Hadoop-Distributed-File-System"><a href="#1-HDFS-Hadoop-Distributed-File-System" class="headerlink" title="1. HDFS(Hadoop Distributed File System)"></a>1. HDFS(Hadoop Distributed File System)</h3><h4 id="HDFS架构"><a href="#HDFS架构" class="headerlink" title="HDFS架构"></a>HDFS架构</h4><ul>
-<li>数据块：读/写的最小单位，HDFS的块更大，128MB, 是为了最小化寻址开销。</li>
-<li>Namenode: 一个管理节点，管理文件系统树及整棵树内的文件和目录。</li>
-<li>Datanode: 多个工作节点，记录每个文件中各个块所在的数据节点信息，Datanode从磁盘中读取块。</li>
-</ul>
-<h4 id="HDFS操作"><a href="#HDFS操作" class="headerlink" title="HDFS操作"></a>HDFS操作</h4><ul>
-<li>hadoop fs -ls <args></args></li>
-<li>hadoop fs -put localfile hdfsfile  上传本机文件到hdfs中的目录下</li>
-<li>hadoop fs -get hdfsfile localfile  下载hdfs中的文件至本机</li>
-<li>hadoop fs -test -e path 检查文件是否存在，如果存在，返回0</li>
-<li>参考 <a href="https://www.yiibai.com/hadoop/hadoop_command_reference.html#article-start" target="_blank" rel="noopener">https://www.yiibai.com/hadoop/hadoop_command_reference.html#article-start</a> </li>
-</ul>
-<h3 id="2-Map-Reduce"><a href="#2-Map-Reduce" class="headerlink" title="2. Map-Reduce"></a>2. Map-Reduce</h3><p>三个阶段：Map,Shuffle,Reduce.</p>
-<h4 id="Map阶段"><a href="#Map阶段" class="headerlink" title="Map阶段"></a>Map阶段</h4><p>输入数据存储在HDFS中，处理后形成<key,value>若干小块。</key,value></p>
-<h4 id="Shuffle阶段"><a href="#Shuffle阶段" class="headerlink" title="Shuffle阶段"></a>Shuffle阶段</h4><p>Map阶段后，对key值进行了排序，再交给reduce，这个过程系统自动实现。</p>
-<h4 id="Reduce阶段"><a href="#Reduce阶段" class="headerlink" title="Reduce阶段"></a>Reduce阶段</h4><p>聚拢数据再处理，将输出结果返回到Hadoop服务器上。</p>
-<h3 id="3-Streaming"><a href="#3-Streaming" class="headerlink" title="3. Streaming"></a>3. Streaming</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p>任何语言编写的map, reduce程序能够在hadoop集群上运行，map/reduce程序只要遵循从标准输入stdin读，写出到标准输出stdout即可。</p>
-<h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><pre><code>hadoop  jar /hadoop-mapreduce/hadoop-streaming.jar \\
--D mapred.job.name=&quot;xxx&quot; \\
--D mapreduce.job.queuename= xxx\\
--D mapred.map.tasks= x\\
--D mapred.reduce.tasks= x\\
--cmdenv CLASSPATH=\\
--input  xxx\\
--output  xxx\\
--mapper &quot;python mapper.py&quot; \\
--reducer &quot;python reducer.py&quot; \\
--file mapper.py \\
--file reducer.py
-</code></pre><h3 id="4-Python处理标准输入-输出相关"><a href="#4-Python处理标准输入-输出相关" class="headerlink" title="4. Python处理标准输入/输出相关"></a>4. Python处理标准输入/输出相关</h3><ul>
-<li>sys.argv: 用户输入的参数列表，程序外部输入</li>
-<li>os.system(‘command’): 会执行括号中的命令；如果成功，返回0，否则返回1；执行多条语句时，用;分隔</li>
-<li>sys.exit(1): 有错误退出</li>
-<li>sys.exit(0): 无错误退出</li>
-<li>str.join(sequence): str是连接的符号，sequence是连接的字符串序列</li>
-<li>调试时使用管道，模拟streaming, 在本地完成map/reduce程序的调试</li>
-</ul>
+        <h2 id="稀疏性"><a href="#稀疏性" class="headerlink" title="稀疏性"></a>稀疏性</h2><p>推荐系统中数据的很多特征分量都为0，只有少数维度具有统计值。</p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p>不考虑特征分量$x_i$和$x_j$的相互关系，即相互独立. $$f(x) = w_0+\sum_{i=1}^{n}w_ix_i$$</p>
+<p>如果要考虑两个特征分量间的相互联系，则：<br>$$f(x) = w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n-1}\sum_{j=i+1}^{n}w_{ij}x_ix_j$$<br>高维稀疏数据中存在大量的未关联的特征分量，即$w_{ij}=0$<br>$$v_i = (v_{i1},v_{i2},\cdots,v_{ik}) ^ \mathrm{T}$$<br>$v_i$可以看成特征向量$i$的一个新的维度展开<br>$$w_{ij}=  {v_i} ^ \mathrm{ T }v_j=\sum_{l=1}^kv_{il}v_{jl}$$<br>$$f(x)=w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n-1}\sum_{j=i+1}^{n}({v_i} ^ \mathrm{ T }v_j)x_ix_j$$</p>
+<p><img src="/img/Factorization-Machines-FM/1.PNG" alt="&quot;Interaction Matrix&quot;"> </p>
+<p>因为是交互矩阵，所以矩阵$W$的对角元素可以忽略，可取无限大，则是严格对角占优，那么$W$正定（定理）</p>
+<h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p><img src="/img/Factorization-Machines-FM/2.PNG" alt="&quot;Deduction1&quot;"><br>原始为$O(kn^2)$ 这里的$n$是样本维度，对于稀疏数据来说，复杂度很大</p>
+<p><img src="/img/Factorization-Machines-FM/3.PNG" alt="&quot;Deduction2&quot;"><br>变化后复杂度降低为$O(kn)$, 在$k$维中，很多的$x_i$都为0, 因此实际复杂度比这个还小。</p>
+<h2 id="参数学习"><a href="#参数学习" class="headerlink" title="参数学习"></a>参数学习</h2><p>具体参见 <a href="https://blog.csdn.net/itplus/article/details/40536025" target="_blank" rel="noopener">FM中的学习算法</a></p>
+<p>核心：将目标函数写为以下形式：<br>$$\hat{y}(x)=g_{\theta}(x)+\theta h_{\theta}(x)$$<br>$g_{\theta}(x)$与$h_{\theta}(x)$都与$\theta$无关，因此：<br>$$\frac{\partial \hat{y}(x)}{\partial \theta} = h_{\theta}(x)$$<br>这样就可以针对参数分类考虑。<br>总的来说，参数可分为三类</p>
+<ol>
+<li>$\theta=w_0$</li>
+<li>$\theta=w_l(l = 1,2,\cdots,n)$</li>
+<li>$\theta=v_{l_m}$</li>
+</ol>
+<p>针对不同的类别，求参数$\theta$的偏导</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p> <a href="https://blog.csdn.net/itplus/article/details/40534885" target="_blank" rel="noopener">Factorization Machines 学习笔记</a></p>
 
       
     </div>
@@ -382,8 +365,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/02/模型评估/" rel="next" title="模型评估">
-                <i class="fa fa-chevron-left"></i> 模型评估
+              <a href="/2018/05/21/Linux打包压缩命令/" rel="next" title="Linux打包压缩命令">
+                <i class="fa fa-chevron-left"></i> Linux打包压缩命令
               </a>
             
           </div>
@@ -391,10 +374,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/24/word2vec-基础语言模型/" rel="prev" title="word2vec-基础语言模型">
-                word2vec-基础语言模型 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -517,7 +496,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-HDFS-Hadoop-Distributed-File-System"><span class="nav-number">1.</span> <span class="nav-text">1. HDFS(Hadoop Distributed File System)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HDFS架构"><span class="nav-number">1.1.</span> <span class="nav-text">HDFS架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HDFS操作"><span class="nav-number">1.2.</span> <span class="nav-text">HDFS操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Map-Reduce"><span class="nav-number">2.</span> <span class="nav-text">2. Map-Reduce</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Map阶段"><span class="nav-number">2.1.</span> <span class="nav-text">Map阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shuffle阶段"><span class="nav-number">2.2.</span> <span class="nav-text">Shuffle阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reduce阶段"><span class="nav-number">2.3.</span> <span class="nav-text">Reduce阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Streaming"><span class="nav-number">3.</span> <span class="nav-text">3. Streaming</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#作用"><span class="nav-number">3.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令"><span class="nav-number">3.2.</span> <span class="nav-text">命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Python处理标准输入-输出相关"><span class="nav-number">4.</span> <span class="nav-text">4. Python处理标准输入/输出相关</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#稀疏性"><span class="nav-number">1.</span> <span class="nav-text">稀疏性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型"><span class="nav-number">2.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度"><span class="nav-number">3.</span> <span class="nav-text">复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数学习"><span class="nav-number">4.</span> <span class="nav-text">参数学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

@@ -232,6 +232,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/30/Factorization-Machines-FM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xlwang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独行侠">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/30/Factorization-Machines-FM/" itemprop="url">Factorization Machines(FM)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-30T15:32:28+08:00">
+                2018-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/推荐系统/" itemprop="url" rel="index">
+                    <span itemprop="name">推荐系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="稀疏性"><a href="#稀疏性" class="headerlink" title="稀疏性"></a>稀疏性</h2><p>推荐系统中数据的很多特征分量都为0，只有少数维度具有统计值。</p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p>不考虑特征分量$x_i$和$x_j$的相互关系，即相互独立. $$f(x) = w_0+\sum_{i=1}^{n}w_ix_i$$</p>
+<p>如果要考虑两个特征分量间的相互联系，则：<br>$$f(x) = w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n-1}\sum_{j=i+1}^{n}w_{ij}x_ix_j$$<br>高维稀疏数据中存在大量的未关联的特征分量，即$w_{ij}=0$<br>$$v_i = (v_{i1},v_{i2},\cdots,v_{ik}) ^ \mathrm{T}$$<br>$v_i$可以看成特征向量$i$的一个新的维度展开<br>$$w_{ij}=  {v_i} ^ \mathrm{ T }v_j=\sum_{l=1}^kv_{il}v_{jl}$$<br>$$f(x)=w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n-1}\sum_{j=i+1}^{n}({v_i} ^ \mathrm{ T }v_j)x_ix_j$$</p>
+<p><img src="/img/Factorization-Machines-FM/1.PNG" alt="&quot;Interaction Matrix&quot;"> </p>
+<p>因为是交互矩阵，所以矩阵$W$的对角元素可以忽略，可取无限大，则是严格对角占优，那么$W$正定（定理）</p>
+<h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p><img src="/img/Factorization-Machines-FM/2.PNG" alt="&quot;Deduction1&quot;"><br>原始为$O(kn^2)$ 这里的$n$是样本维度，对于稀疏数据来说，复杂度很大</p>
+<p><img src="/img/Factorization-Machines-FM/3.PNG" alt="&quot;Deduction2&quot;"><br>变化后复杂度降低为$O(kn)$, 在$k$维中，很多的$x_i$都为0, 因此实际复杂度比这个还小。</p>
+<h2 id="参数学习"><a href="#参数学习" class="headerlink" title="参数学习"></a>参数学习</h2><p>具体参见 <a href="https://blog.csdn.net/itplus/article/details/40536025" target="_blank" rel="noopener">FM中的学习算法</a></p>
+<p>核心：将目标函数写为以下形式：<br>$$\hat{y}(x)=g_{\theta}(x)+\theta h_{\theta}(x)$$<br>$g_{\theta}(x)$与$h_{\theta}(x)$都与$\theta$无关，因此：<br>$$\frac{\partial \hat{y}(x)}{\partial \theta} = h_{\theta}(x)$$<br>这样就可以针对参数分类考虑。<br>总的来说，参数可分为三类</p>
+<ol>
+<li>$\theta=w_0$</li>
+<li>$\theta=w_l(l = 1,2,\cdots,n)$</li>
+<li>$\theta=v_{l_m}$</li>
+</ol>
+<p>针对不同的类别，求参数$\theta$的偏导</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p> <a href="https://blog.csdn.net/itplus/article/details/40534885" target="_blank" rel="noopener">Factorization Machines 学习笔记</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/21/Linux打包压缩命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1689,205 +1846,13 @@ r.hget(key,field_name): 返回该key下指定字段的值
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/02/模型评估/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xlwang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="独行侠">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/02/模型评估/" itemprop="url">模型评估</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T22:33:15+08:00">
-                2018-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="1-训练集划分"><a href="#1-训练集划分" class="headerlink" title="1. 训练集划分"></a>1. 训练集划分</h3><h4 id="留出法"><a href="#留出法" class="headerlink" title="留出法"></a>留出法</h4><ul>
-<li>把数据集D划分为两个互斥的子集</li>
-<li>train/test数据集应该尽可能保持<strong>数据分布的一致性</strong>，避免因为划分而引入额外的偏差（使用分层采样）</li>
-<li>单次使用因为随机划分会导致估计结果不稳定，应该多次随机划分，重复进行实验评估后取平均值。</li>
-</ul>
-<h4 id="交叉验证法"><a href="#交叉验证法" class="headerlink" title="交叉验证法"></a>交叉验证法</h4><ul>
-<li>将数据集D划分成k个互斥的子集，每次使用k-1个集合数据作为Train，剩下的子集作为test，从而进行k次训练和测试，返回均值。</li>
-<li>评估结果依赖于k的选择。</li>
-<li>留一法是交叉验证的特殊情况；<strong>优点：使用了尽可能多的数据进行训练；缺点：计算开销</strong><h4 id="自助法（Bootstrapping）"><a href="#自助法（Bootstrapping）" class="headerlink" title="自助法（Bootstrapping）"></a>自助法（Bootstrapping）</h4></li>
-<li>每次从数据集D中选择一个样本拷贝到D’,直至|D|=|D’|，D’用于训练，D-D’用于测试。</li>
-<li>$\lim_{m\rightarrow+\infty}(1-\frac{1}{m})^m = \frac{1}{e}$, 样本在m次采样中始终不被采到的概率，<strong>包外估计</strong><br> 优点：适用于数据集过小时；产生了多个不同的训练集，适用于集成学习<br> 缺点：改变了数据的原始分布，会带来估计得偏差。</li>
-</ul>
-<h3 id="2-性能度量"><a href="#2-性能度量" class="headerlink" title="2. 性能度量"></a>2. 性能度量</h3><table>
-<thead>
-<tr>
-<th style="text-align:left">真实/预测</th>
-<th style="text-align:right">正例</th>
-<th style="text-align:center">反例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">正例</td>
-<td style="text-align:right">TP</td>
-<td style="text-align:center">FN</td>
-</tr>
-<tr>
-<td style="text-align:left">反例</td>
-<td style="text-align:right">FP</td>
-<td style="text-align:center">TN</td>
-</tr>
-</tbody>
-</table>
-<h4 id="PR曲线"><a href="#PR曲线" class="headerlink" title="PR曲线"></a>PR曲线</h4><ul>
-<li>Precision: $\frac{TP}{TP+FP}$</li>
-<li>Recall: $\frac{TP}{TP+FN}$<br> <strong>查准率和查全率是一对矛盾的度量，设定一个threshold，就可以得到相应的P和R，得到PR曲线</strong></li>
-<li>BEP：平衡点 P=R时的取值</li>
-<li>F1度量：$$\frac{1}{F_1}=\frac{1}{2}*(\frac{1}{P}+\frac{1}{R})$$</li>
-<li>$$\frac{1}{F_\beta}=\frac{1}{1+\beta^2}*(\frac{1}{P}+\frac{\beta^2}{R})$$</li>
-<li>$\beta&gt;1$时，查全率影响更大</li>
-</ul>
-<h4 id="ROC和AUC"><a href="#ROC和AUC" class="headerlink" title="ROC和AUC"></a>ROC和AUC</h4><ul>
-<li>ROC的纵轴：TPR(True Positive rate)</li>
-<li>ROC的横轴：FPR(False Positive rate)</li>
-<li>$TPR=\frac{TP}{TP+FN}$(Recall)</li>
-<li>$FPR=\frac{FP}{FP+TN}$</li>
-<li>AUC为ROC曲线下的面积</li>
-</ul>
-<h4 id="代价敏感"><a href="#代价敏感" class="headerlink" title="代价敏感"></a>代价敏感</h4><ul>
-<li>不同类型错误所造成的损失不同。</li>
-</ul>
-<h3 id="3-偏差与方差"><a href="#3-偏差与方差" class="headerlink" title="3. 偏差与方差"></a>3. 偏差与方差</h3><ul>
-<li>泛化误差=偏差+方差+噪声</li>
-<li>噪声是期望误差的下限</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1931,7 +1896,7 @@ r.hget(key,field_name): 返回该key下指定字段的值
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1942,7 +1907,7 @@ r.hget(key,field_name): 返回该key下指定字段的值
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
